@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -23,14 +23,19 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Make gradlew executable
-        working-directory: Mi-FreeForm-master    # ← kunci utamanya di sini
+        working-directory: Mi-FreeForm-master
         run: chmod +x gradlew
 
+      - name: Show Gradle version
+        working-directory: Mi-FreeForm-master
+        run: ./gradlew --version
+
       - name: Build Debug APK
-        working-directory: Mi-FreeForm-master    # ← semua gradle command dari sini
-        run: ./gradlew assembleDebug
+        working-directory: Mi-FreeForm-master
+        run: ./gradlew assembleDebug --stacktrace --info 2>&1 | tail -100
 
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: mi-freeform-debug
