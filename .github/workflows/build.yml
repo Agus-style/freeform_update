@@ -29,9 +29,9 @@ jobs:
       - name: Build Debug APK
         working-directory: Mi-FreeForm-master
         run: |
-          ./gradlew assembleDebug --stacktrace 2>&1 | head -80
-          exit ${PIPESTATUS[0]}
-
+          set -o pipefail
+          ./gradlew assembleDebug 2>&1 | grep -E "^.*[Ee]rror|FAILED|Could not|Unresolved" | head -30
+          
       - name: Upload APK
         if: success()
         uses: actions/upload-artifact@v4
