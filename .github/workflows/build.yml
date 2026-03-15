@@ -26,13 +26,11 @@ jobs:
         working-directory: Mi-FreeForm-master
         run: chmod +x gradlew
 
-      - name: Show Gradle version
-        working-directory: Mi-FreeForm-master
-        run: ./gradlew --version
-
       - name: Build Debug APK
         working-directory: Mi-FreeForm-master
-        run: ./gradlew assembleDebug --stacktrace --info 2>&1 | tail -100
+        run: |
+          ./gradlew assembleDebug --stacktrace 2>&1 | head -80
+          exit ${PIPESTATUS[0]}
 
       - name: Upload APK
         if: success()
